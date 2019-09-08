@@ -27,7 +27,7 @@ function setup() {
 	BIRD_IMG = loadImage("images/bird.png");
 
 	// Create agents
-	population = new Population(POPULATION_SIZE);
+	population = new Population(POPULATION_SIZE, true);
 	environment = new Environment();
 
 	var canvas = createCanvas(WIDTH, HEIGHT);
@@ -56,6 +56,3 @@ async function keyPressed() {
 			'downloads://FlappyBirdAI_Trained_Bird');
 	}
 }
-
-// To load trained bird
-// trained_model = trained = await tf.loadLayersModel('http://127.0.0.1:5500/data/FlappyBirdAI_Trained_Bird.json');

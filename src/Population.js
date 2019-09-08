@@ -1,13 +1,17 @@
 const MUTATION_RATE = 0.1;
 
 class Population {
-	constructor(population_size) {
+	constructor(population_size, only_trained) {
 		this.generation_count = 1;
 		this.birds = [];
 		this.dead_birds = [];
 
-		for (let i = 0; i < population_size; i++) {
-			this.birds[i] = new Bird();
+		if (only_trained) {
+			this.load_trained_bird().then(res => this.birds.push(res));
+		} else {
+			for (let i = 0; i < population_size; i++) {
+				this.birds[i] = new Bird();
+			}
 		}
 	}
 
@@ -28,13 +32,13 @@ class Population {
 		// Generate Next Generation
 		if (this.birds.length === 0) {
 			// Create next generation
-			this.generation_count ++;
+			this.generation_count++;
 			let next_generation = Neuroevolution.create_next_generation(
 				population.dead_birds,
 				MUTATION_RATE
 			);
 			this.birds = next_generation;
-			console.log(`Generation: ${this.generation_count}`)
+			console.log(`Generation: ${this.generation_count}`);
 
 			// Clean up previous generation
 			this.dead_birds.forEach(bird => bird.dispose());
@@ -46,5 +50,17 @@ class Population {
 
 	draw() {
 		this.birds.forEach(bird => bird.draw());
+	}
+
+	async load_trained_bird() {
+		// Load model
+		let trained_model = await tf.loadLayersModel(
+			"./data/FlappyBirdAI_Trained_Bird.json"
+		);
+		// Create Brain
+		let trained_brain = new Brain(trained_model, 5, 8, 2);
+		// Create Bird
+		let trained_bird = new Bird(trained_brain);
+		return trained_bird;
 	}
 }
