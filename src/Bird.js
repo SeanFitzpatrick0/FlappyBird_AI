@@ -1,4 +1,3 @@
-// TODO add is_alive rater than saved birds
 class Bird {
 	constructor(brain) {
 		// Position

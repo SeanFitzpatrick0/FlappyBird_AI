@@ -19,18 +19,19 @@ let slider;
 function setup() {
 	// Setup Modes
 	angleMode(DEGREES);
-	tf.setBackend('cpu');
+	tf.setBackend("cpu");
 
 	// Load assets
-	BACKGROUND_IMG = loadImage('images/background.png');
-	PIPE_IMG = loadImage('images/pipe.png');
-	BIRD_IMG = loadImage('images/bird.png');
+	BACKGROUND_IMG = loadImage("images/background.png");
+	PIPE_IMG = loadImage("images/pipe.png");
+	BIRD_IMG = loadImage("images/bird.png");
 
 	// Create agents
 	population = new Population(POPULATION_SIZE);
 	environment = new Environment();
 
-	createCanvas(WIDTH, HEIGHT);
+	var canvas = createCanvas(WIDTH, HEIGHT);
+	canvas.parent("canvas_container");
 	slider = createSlider(1, 10, 1);
 }
 
@@ -47,9 +48,14 @@ function draw() {
 	environment.draw();
 }
 
-function keyPressed() {
-	if (key === 'S') {
-		let bird = birds[0];
-		saveJSON(bird.brain, 'bird.json');
+// User Interactions
+async function keyPressed() {
+	if (key === "s") {
+		let bird = population.birds[0];
+		const _ = await bird.brain.model.save(
+			'downloads://FlappyBirdAI_Trained_Bird');
 	}
 }
+
+// To load trained bird
+// trained_model = trained = await tf.loadLayersModel('http://127.0.0.1:5500/data/FlappyBirdAI_Trained_Bird.json');

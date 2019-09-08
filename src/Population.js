@@ -2,7 +2,7 @@ const MUTATION_RATE = 0.1;
 
 class Population {
 	constructor(population_size) {
-		this.generation = 1;
+		this.generation_count = 1;
 		this.birds = [];
 		this.dead_birds = [];
 
@@ -28,11 +28,13 @@ class Population {
 		// Generate Next Generation
 		if (this.birds.length === 0) {
 			// Create next generation
+			this.generation_count ++;
 			let next_generation = Neuroevolution.create_next_generation(
 				population.dead_birds,
 				MUTATION_RATE
 			);
 			this.birds = next_generation;
+			console.log(`Generation: ${this.generation_count}`)
 
 			// Clean up previous generation
 			this.dead_birds.forEach(bird => bird.dispose());
