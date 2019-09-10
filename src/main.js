@@ -16,7 +16,7 @@ let environment;
 // SPEED SLIDER
 let slider;
 
-function setup() {
+function setup(only_trained=true) {
 	// Setup Modes
 	angleMode(DEGREES);
 	tf.setBackend("cpu");
@@ -27,17 +27,18 @@ function setup() {
 	BIRD_IMG = loadImage("images/bird.png");
 
 	// Create agents
-	population = new Population(POPULATION_SIZE, true);
+	population = new Population(POPULATION_SIZE, only_trained);
 	environment = new Environment();
 
 	var canvas = createCanvas(WIDTH, HEIGHT);
 	canvas.parent("canvas_container");
-	slider = createSlider(1, 10, 1);
+	speed_slider = createSlider(1, 10, 1);
+	speed_slider.parent("speed_slider_container");
 }
 
 function draw() {
 	// Move N cycles before render
-	for (let n = 0; n < slider.value(); n++) {
+	for (let n = 0; n < speed_slider.value(); n++) {
 		environment.move();
 		population.move(environment);
 	}
@@ -53,6 +54,7 @@ async function keyPressed() {
 	if (key === "s") {
 		let bird = population.birds[0];
 		const _ = await bird.brain.model.save(
-			'downloads://FlappyBirdAI_Trained_Bird');
+			"downloads://FlappyBirdAI_Trained_Bird"
+		);
 	}
 }

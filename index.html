@@ -11,6 +11,29 @@
 		<!-- Tensorflow JS -->
 		<script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@1.0.4/dist/tf.min.js"></script>
 
+		<!-- Bootstrap -->
+		<link
+			rel="stylesheet"
+			href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+			integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+			crossorigin="anonymous"
+		/>
+		<script
+			src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+			integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+			crossorigin="anonymous"
+		></script>
+		<script
+			src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+			integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+			crossorigin="anonymous"
+		></script>
+		<script
+			src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+			integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+			crossorigin="anonymous"
+		></script>
+
 		<!-- Imports -->
 		<script src="src/Environment.js"></script>
 		<script src="src/Pipe.js"></script>
@@ -21,10 +44,178 @@
 		<script src="src/Neuroevolution.js"></script>
 		<script src="src/main.js"></script>
 
+		<!-- Custom CSS -->
+		<style>
+			#canvas_card {
+				margin: 50px auto;
+				width: 704px;
+			}
+
+			#about_card {
+				width: 80%;
+				min-width: 704px;
+				margin: auto;
+				margin-bottom: 50px;
+			}
+		</style>
+
 		<title>Flappy Bird AI</title>
 	</head>
 
 	<body>
-		<div id="canvas_container"></div>
+		<div class="container-fullwidth">
+			<!-- Header -->
+			<header>
+				<div class="navbar navbar-dark bg-dark box-shadow">
+					<div class="container d-flex justify-content-around">
+						<!-- Title -->
+						<p class="navbar-brand d-flex align-items-center">
+							<img
+								src="images/bird.png"
+								alt="Flappy Bird"
+								width="30px"
+								height="30px"
+							/>
+							<strong>Flappy Bird AI</strong>
+						</p>
+
+						<!-- State Buttons -->
+						<div>
+							<button
+								id="trained_bird_button"
+								class="btn btn-primary btn-lg"
+							>
+								Trained Bird
+							</button>
+							<button
+								id="view_training_button"
+								class="btn btn-secondary btn-lg"
+							>
+								View Training
+							</button>
+						</div>
+					</div>
+				</div>
+			</header>
+
+			<!-- Game Card -->
+			<div id="canvas_card" class="card">
+				<!-- Game -->
+				<div
+					id="canvas_container"
+					class="d-flex justify-content-center"
+				>
+					<!-- P5 canvas injected here -->
+				</div>
+				<div class="d-flex justify-content-end">
+					<div class="mt-3 mr-3">
+						<h6>Game Speed</h6>
+						<div id="speed_slider_container">
+							<!-- P5 game speed slider injected here -->
+						</div>
+					</div>
+				</div>
+
+				<!-- Description -->
+				<div class="card-body">
+					<h5 id="game_title" class="card-title">
+						<!-- Game title injected here -->
+					</h5>
+					<p id="game_description" class="card-text">
+						<!-- Game description injected here -->
+					</p>
+					<hr />
+					<!-- Game interactions -->
+					<p>
+						Press <kbd>S</kbd> to download the AI's Tensorflow model
+					</p>
+					<p>Move the slider to adjust the game speed</p>
+				</div>
+			</div>
+
+			<!-- About Card -->
+			<div id="about_card" class="card">
+				<div class="card-header">
+					<h5>About</h5>
+				</div>
+				<div class="card-body">
+					<h6 class="card-title">Title</h6>
+					<p class="card-text">
+						Content
+					</p>
+				</div>
+			</div>
+		</div>
 	</body>
+
+	<!-- Page Interaction -->
+	<script>
+		// Define titles and details
+		var trained_bird_info = {
+			title: "Trained Bird",
+			description:
+				"This was the best preforming bird after training for <b>15 generations</b>. It is capable of navigating the environment without hitting any pipes."
+		};
+		var view_training_info = {
+			title: "Training",
+			description:
+				"This shows the training process for this AI. Each generation creates a populations of birds try navigate the environment. The best preforming birds have a grater chance to be included in the next generation. The birds in the next generation are  then altered slightly to create new behavior. See the <b>about</b> section for more details."
+		};
+
+		// set initial description
+		set_description(trained_bird_info.title, trained_bird_info.description);
+
+		// Add event listeners for buttons
+		var trained_bird_button = document.getElementById(
+			"trained_bird_button"
+		);
+		var view_training_button = document.getElementById(
+			"view_training_button"
+		);
+
+		trained_bird_button.addEventListener("click", e => {
+			if (e.target.classList.contains("btn-primary")) return;
+			// Swap button classes
+			swap_active_button(trained_bird_button, view_training_button);
+			// Rest sketch
+			reset_sketch(true);
+			// Set info
+			set_description(
+				trained_bird_info.title,
+				trained_bird_info.description
+			);
+		});
+
+		view_training_button.addEventListener("click", e => {
+			if (e.target.classList.contains("btn-primary")) return;
+			// Swap button classes
+			swap_active_button(view_training_button, trained_bird_button);
+			// Rest sketch
+			reset_sketch(false);
+			// Set info
+			set_description(
+				view_training_info.title,
+				view_training_info.description
+			);
+		});
+
+		function reset_sketch(only_trained_bird) {
+			// Remove old slider
+			document.getElementById("speed_slider_container").innerHTML = "";
+			// ReCreate canvas
+			setup(only_trained_bird);
+		}
+
+		function swap_active_button(active_button, inactive_button) {
+			active_button.classList.remove("btn-secondary");
+			active_button.classList.add("btn-primary");
+			inactive_button.classList.remove("btn-primary");
+			inactive_button.classList.add("btn-secondary");
+		}
+
+		function set_description(title, description) {
+			document.getElementById("game_title").innerHTML = title;
+			document.getElementById("game_description").innerHTML = description;
+		}
+	</script>
 </html>
