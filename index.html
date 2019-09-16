@@ -34,6 +34,12 @@
 			crossorigin="anonymous"
 		></script>
 
+		<!-- Font Awesome -->
+		<link
+			rel="stylesheet"
+			href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+		/>
+
 		<!-- Imports -->
 		<script src="src/Environment.js"></script>
 		<script src="src/Pipe.js"></script>
@@ -124,6 +130,10 @@
 					<p id="game_description" class="card-text">
 						<!-- Game description injected here -->
 					</p>
+					<p>
+						See the <b><a href="#about_card">about</a></b> section
+						for more details.
+					</p>
 					<hr />
 					<!-- Game interactions -->
 					<p>
@@ -139,16 +149,142 @@
 					<h5>About</h5>
 				</div>
 				<div class="card-body">
-					<h6 class="card-title">Title</h6>
 					<p class="card-text">
-						Content
+						This AI was trained using
+						<b>N.E.A.T</b>. This is a genetic algorithm that trains
+						the AI by creating generations of agents and simulating
+						them in a environment. Each bird has a Neural Network
+						that will decide to make the bird flap based on its
+						inputs. The birds with the best Neural Networks are
+						selected for the next generation and slightly mutated to
+						create new behavior.
 					</p>
+					<p class="card-text">
+						This project was made using
+						<a href="https://p5js.org/"><b>P5js</b></a> to render
+						the game and
+						<a href="https://www.tensorflow.org/js"
+							><b>TensorFlow js</b></a
+						>
+						to create the Neural Networks.
+					</p>
+					<div>
+						<img
+							src="images/p5js_logo.png"
+							alt="p5js logo"
+							width="100px"
+						/>
+						<img
+							src="images/tensorflow_logo.png"
+							alt="tensorflow logo"
+							width="100px"
+						/>
+					</div>
+
+					<div class="mt-4 mb-4">
+						<p class="card-text">
+							The code for this project can be found
+							<a
+								href="https://github.com/SeanFitz1997/FlappyBird_AI"
+								><b>Here</b>.
+								<i
+									class="fa fa-github"
+									style="font-size:48px;"
+								></i
+							></a>
+						</p>
+					</div>
+
+					<h6 class="card-title">Neural Network</h6>
+					<p class="card-text">
+						Each bird has a Neural network that determines whether
+						to flap or not. This network is a sequential model made
+						up of three <b>dense layers</b>. An input layer with 5
+						neurons, a hidden layer with 8 neurons and a output
+						layer with 2 neurons.
+					</p>
+					<p class="card-text">
+						The five inputs the bird receives are:
+					</p>
+					<ol>
+						<li>The Birds Y position</li>
+						<li>The Birds velocity</li>
+						<li>The Birds distance from the pipe</li>
+						<li>The Y position of the top pipe</li>
+						<li>The Y position of the bottom pipe</li>
+					</ol>
+					<p class="card-text">
+						The output layer has a <b>softmax activation</b> and
+						will return two values that will add up to one. The bird
+						will flap if the first value is greater than the second
+						and will not if the opposite is true.
+					</p>
+					<div class="d-flex justify-content-around mt-4 mb-4">
+						<img src="images/inputs_diagram.png" width="45%" />
+						<img
+							src="images/neural_network_diagram.png"
+							width="45%"
+						/>
+					</div>
+
+					<h6 class="card-title">Training Process</h6>
+					<p class="card-text">
+						The training process for this AI involves:
+					</p>
+					<ol>
+						<li>
+							Create an initial population of <b>N</b> Birds with
+							neural networks containing random weights
+						</li>
+						<li>
+							Simulate the population in the environment until all
+							birds have died.
+						</li>
+						<li>
+							Create the next generation with the best preforming
+							bird's Neural networks.
+						</li>
+						<li>
+							Mutate a small portion of weights in each birds
+							Neural network <small>(E.g. 10%)</small>with random
+							values to create new behaviors.
+						</li>
+						<li>
+							Repeat steps 2 - 4 until birds can successfully
+							navigate the environment.
+						</li>
+					</ol>
 				</div>
 			</div>
 		</div>
+
+		<footer class="text-muted">
+			<div class="container">
+				<p class="float-right">
+					<a href="#">Back to top</a>
+				</p>
+				<div class="text-center">
+					<p>
+						<b>Created by</b>: Seán Fitzpatrick,
+						<a
+							href="https://www.linkedin.com/in/sean-fitzpatrick-41064a138/"
+						>
+							seanlkfitzpatrick@gmail.com</a
+						>
+					</p>
+					<p>
+						<b>Github</b>: SeanFitz1997
+						<a href="https://github.com/SeanFitz1997">
+							https://github.com/SeanFitz1997</a
+						>
+					</p>
+				</div>
+			</div>
+		</footer>
 	</body>
 
 	<!-- Page Interaction -->
+	<!-- TODO seperate to index.js -->
 	<script>
 		// Define titles and details
 		var trained_bird_info = {
@@ -159,7 +295,7 @@
 		var view_training_info = {
 			title: "Training",
 			description:
-				"This shows the training process for this AI. Each generation creates a populations of birds try navigate the environment. The best preforming birds have a grater chance to be included in the next generation. The birds in the next generation are  then altered slightly to create new behavior. See the <b>about</b> section for more details."
+				"This shows the training process for this AI. Each generation creates a populations of birds try navigate the environment. The best preforming birds have a grater chance to be included in the next generation. The birds in the next generation are  then altered slightly to create new behavior."
 		};
 
 		// set initial description
