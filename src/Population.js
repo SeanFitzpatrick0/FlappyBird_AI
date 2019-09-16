@@ -5,8 +5,13 @@ class Population {
 		this.generation_count = 1;
 		this.birds = [];
 		this.dead_birds = [];
+		this.only_trained = only_trained;
+		this.generation_label_position = {
+			x: WIDTH - 150,
+			y: 30
+		};
 
-		if (only_trained) {
+		if (this.only_trained) {
 			this.load_trained_bird().then(res => this.birds.push(res));
 		} else {
 			for (let i = 0; i < population_size; i++) {
@@ -50,6 +55,17 @@ class Population {
 
 	draw() {
 		this.birds.forEach(bird => bird.draw());
+
+		// Generation Label
+		if (!this.only_trained) {
+			fill(0);
+			textSize(20);
+			text(
+				`Generation: ${this.generation_count}`,
+				this.generation_label_position.x,
+				this.generation_label_position.y
+			);
+		}
 	}
 
 	async load_trained_bird() {
