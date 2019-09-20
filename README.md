@@ -1,7 +1,7 @@
 # FlappyBird_AI
 
 ## Live site
-https://flappybird-ai.s3.amazonaws.com/index.html
+__https://flappybird-ai.s3.amazonaws.com/index.html__
 
 ## Screenshot
 ![Screenshot](images/website_screenshot.png)
